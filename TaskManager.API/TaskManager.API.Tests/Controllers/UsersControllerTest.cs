@@ -16,15 +16,24 @@ namespace TaskManager.API.Tests
         public void GetTaskDetails()
         {
             // Arrange
+            UsersModel record = new UsersModel()
+            {
+                FirstName = "John",
+                LastName = "trump",
+                EmployeeId = 321,
+            };
             UsersController controller = new UsersController();
 
             // Act
-            List<UsersModel> result = controller.GetTaskDetails();
+            var result = controller.Post(record);
+            controller = new UsersController();
+
+            // Act
+            var resultGet = controller.GetTaskDetails();
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count());
-            Assert.AreEqual(1, result.ElementAt(0).UserId);
+            Assert.IsNotNull(resultGet);
+            Assert.Greater(resultGet.Count(), 0);
         }
 
         [Test]
@@ -50,15 +59,26 @@ namespace TaskManager.API.Tests
         public void Put()
         {
             // Arrange
-            int userID = 0;
-            UsersController controller = new UsersController();
-            List<UsersModel> result = controller.GetTaskDetails();
-            userID = result.ElementAt(0).UserId;
             UsersModel record = new UsersModel()
             {
-                UserId= userID,
                 FirstName = "John",
                 LastName = "trump",
+                EmployeeId = 321,
+            };
+            UsersController controller = new UsersController();
+
+            // Act
+            var result = controller.Post(record);
+
+            int userID = 0;
+            controller = new UsersController();
+            var resultPut = controller.GetTaskDetails();
+            userID = resultPut.ElementAt(0).UserId;
+            record = new UsersModel()
+            {
+                UserId= userID,
+                FirstName = "Donald",
+                LastName = "Trump",
                 EmployeeId = 321,
             };
 
@@ -75,10 +95,20 @@ namespace TaskManager.API.Tests
         public void Delete()
         {
             // Arrange
-            int userID = 0;
+            UsersModel record = new UsersModel()
+            {
+                FirstName = "John",
+                LastName = "trump",
+                EmployeeId = 321,
+            };
             UsersController controller = new UsersController();
-            List<UsersModel> result = controller.GetTaskDetails();
-            userID = result.ElementAt(0).UserId;
+
+            // Act
+            var result = controller.Post(record);
+
+            int userID = 0;
+            var resultDelete = controller.GetTaskDetails();
+            userID = resultDelete.ElementAt(0).UserId;
 
             // Act
             var success = controller.Delete(userID);
