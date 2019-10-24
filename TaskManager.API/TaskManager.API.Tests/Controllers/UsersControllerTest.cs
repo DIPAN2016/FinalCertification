@@ -86,7 +86,6 @@ namespace TaskManager.API.Tests
             var success = controller.Put(record);
 
             // Assert
-            // Assert
             Assert.IsNotNull(success);
             Assert.AreEqual(true, success);
         }
